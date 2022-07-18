@@ -1,6 +1,7 @@
 from tensorflow.python.keras.losses import mean_absolute_error
 from PIL import Image
 import os.path
+from tensorflow import image
 
 
 # The L1 loss function
@@ -8,6 +9,18 @@ def l1_loss(y_true, y_pred):
     mae = mean_absolute_error(y_true, y_pred)
     loss = mae * len(y_true)
     return loss
+
+
+# 2D PSNR for images
+def PSNR(y_pred, y_true, max_val):
+    # For array of images, (no. of image, w, h, d), calculate avg psnr
+    if len(y_pred.shape) == 4:
+        psnr = 0
+        for ind in range(len(y_pred)):
+            psnr = psnr + image.psnr(y_pred[ind], y_true[ind], max_val=max_val)
+        return psnr
+    elif len(y_pred.shape) == 3:
+        return image.psnr(y_pred, y_true, max_val=max_val)
 
 
 # re-crop all the images given a size in the folder
