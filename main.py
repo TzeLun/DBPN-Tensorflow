@@ -17,6 +17,7 @@ choice = "DBPN-M"  # DBPN-M (default), DBPN-M NEF, D-DBPN
 sf = 4  # default at 2, otherwise 4 or 8
 
 # Write code to bring in data. DIV2K: https://ieeexplore.ieee.org/document/8014884
+# Dataset obtained from https://data.vision.ee.ethz.ch/cvl/DIV2K/
 # add data augmentation if possible
 # should have x_train, x_test, y_train, y_test
 
