@@ -1,4 +1,4 @@
-from tensorflow.python.keras.layers import Conv2D, Conv2DTranspose, PReLU, ZeroPadding2D, Subtract, Add
+from tensorflow.keras.layers import Conv2D, Conv2DTranspose, PReLU, ZeroPadding2D, Subtract, Add
 
 
 class CONV:

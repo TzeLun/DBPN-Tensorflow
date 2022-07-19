@@ -1,4 +1,4 @@
-from tensorflow.python.keras.losses import mean_absolute_error
+from tensorflow.keras.losses import mean_absolute_error
 from PIL import Image
 import os.path
 from tensorflow import image
