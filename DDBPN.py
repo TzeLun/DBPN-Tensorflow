@@ -1,4 +1,4 @@
-from tensorflow.python.keras.layers import Concatenate
+from tensorflow.keras.layers import Concatenate
 from Models import *
 
 

@@ -1,6 +1,5 @@
 import tensorflow as tf
-from tensorflow.python.keras import Input, Model
-from tensorflow.python.keras.optimizer_v1 import Adam
+from tensorflow.keras import Input, Model
 from tensorflow.keras.optimizers import Adam
 from DBPNM import *
 from DDBPN import *
@@ -25,14 +24,16 @@ dataset_path = ["C:/Users/Tze Lun/DIV2K/x_train/X4_40x40/",
                 "C:/Users/Tze Lun/DIV2K/y_test/ModelEval/",
                 "C:/Users/Tze Lun/DIV2K/y_valid/HR_160x160/"]
 
-[x_train, y_train, x_test, y_test, x_valid, y_valid] = makeDataset(dataset_path)
+[x_train, x_test, x_valid, y_train, y_test, y_valid] = makeDataset(dataset_path)
 input_dim = x_train.shape
+print(x_train.shape)
+print(y_train.shape)
 # Training the model
 batch_size = 16
 width = input_dim[1]
 height = input_dim[2]
 channel = input_dim[3]
-input_shape = (width, height, channel)
+input_shape = (height, width, channel)
 lr = 0.0004  # learning rate
 alpha = 0.9  # momentum
 epochs = 10  # author used 1000000!!
