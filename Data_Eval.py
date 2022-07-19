@@ -2,6 +2,7 @@ from tensorflow.python.keras.losses import mean_absolute_error
 from PIL import Image
 import os.path
 from tensorflow import image
+import numpy as np
 
 
 # The L1 loss function
@@ -37,4 +38,27 @@ def crop(path_for_convert, path_to_save, size):
             cim.save(path_to_save + name + ".PNG")
 
 
+# converting image to numpy array. One folder one array
+def images_to_array(path_to_dataset):
+    img_array = []
+    directory = os.listdir(path_to_dataset)
+    for item in directory:
+        filepath = os.path.join(path_to_dataset, item)
+        if os.path.isfile(filepath):
+            im = np.array(Image.open(filepath))
+            im = im.astype('float32')
+            img_array.append(im)
+    return np.array(img_array)
+
+
+# Umbrella function to process all the dataset into usable numpy array
+# The argument "path_list", is the list containing the path to all dataset:
+# The order of the path is as follow:
+# path first three: x_train, x_test, x_valid
+# path last half: y_train, y_test, y_valid
+def makeDataset(path_list):
+    data = []
+    for directory in path_list:
+        data.append(images_to_array(directory))
+    return data
 

@@ -1,5 +1,8 @@
 from Data_Eval import crop
 
+# Dataset used -> DIV2K: https://ieeexplore.ieee.org/document/8014884
+# Dataset obtained from https://data.vision.ee.ethz.ch/cvl/DIV2K/
+
 # Folders containing original images from the DIV2K
 list_to_convert = ["C:/Users/Tze Lun/DIV2K/x_train/X4/",
                    "C:/Users/Tze Lun/DIV2K/x_valid/X4/",

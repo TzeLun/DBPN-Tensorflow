@@ -1,6 +1,7 @@
 import tensorflow as tf
-from tensorflow.python.keras import Input
-import numpy as np
+from tensorflow.python.keras import Input, Model
+from tensorflow.python.keras.optimizer_v1 import Adam
+from tensorflow.keras.optimizers import Adam
 from DBPNM import *
 from DDBPN import *
 from Data_Eval import *
@@ -16,39 +17,44 @@ print(is_cuda_gpu_available)
 choice = "DBPN-M"  # DBPN-M (default), DBPN-M NEF, D-DBPN
 sf = 4  # default at 2, otherwise 4 or 8
 
-# Write code to bring in data. DIV2K: https://ieeexplore.ieee.org/document/8014884
-# Dataset obtained from https://data.vision.ee.ethz.ch/cvl/DIV2K/
-# add data augmentation if possible
-# should have x_train, x_test, y_train, y_test
+# Data generation:
+dataset_path = ["C:/Users/Tze Lun/DIV2K/x_train/X4_40x40/",
+                "C:/Users/Tze Lun/DIV2K/x_test/ModelEval/",
+                "C:/Users/Tze Lun/DIV2K/x_valid/X4_40x40/",
+                "C:/Users/Tze Lun/DIV2K/y_train/HR_160x160/",
+                "C:/Users/Tze Lun/DIV2K/y_test/ModelEval/",
+                "C:/Users/Tze Lun/DIV2K/y_valid/HR_160x160/"]
 
+[x_train, y_train, x_test, y_test, x_valid, y_valid] = makeDataset(dataset_path)
+input_dim = x_train.shape
 # Training the model
 batch_size = 16
-width = 40
-height = 40
-channel = 3
+width = input_dim[1]
+height = input_dim[2]
+channel = input_dim[3]
 input_shape = (width, height, channel)
 lr = 0.0004  # learning rate
 alpha = 0.9  # momentum
-epochs = 100000  # author used 1000000!!
-split = 0.2  # ratio of dataset for validation
+epochs = 10  # author used 1000000!!
 
 # Model:
 model_input = Input(shape=input_shape, name=choice)
 output = 0
-if choice is "DBPN-M":
+if choice == "DBPN-M":
     # DBPN-M with error feedback (default)
     output = DBPNM(scale_factor=sf)(model_input)
-elif choice is "DBPN-M NEF":
+elif choice == "DBPN-M NEF":
     # DBPNM without error feedback
     output = DBPNM_WithoutEF(scale_factor=sf)(model_input)
-elif choice is "D-DBPN":
+elif choice == "D-DBPN":
     # D-DBPN
     output = DDBPN(scale_factor=sf)(model_input)
 
-model = tf.keras.Model(model_input, output)
+model = Model(model_input, output)
+print(model.summary)
 model.compile(
     loss=l1_loss,
-    optimizer=tf.keras.optimizers.Adam(learning_rate=lr, beta_1=alpha)
+    optimizer=Adam(lr=lr, beta_1=alpha)
 )
 
 model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid))
