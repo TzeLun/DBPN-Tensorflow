@@ -52,10 +52,10 @@ elif choice == "D-DBPN":
     output = DDBPN(scale_factor=sf)(model_input)
 
 model = Model(model_input, output)
-print(model.summary)
+print(model.summary())
 model.compile(
     loss=l1_loss,
-    optimizer=Adam(lr=lr, beta_1=alpha)
+    optimizer=Adam(learning_rate=lr, beta_1=alpha)
 )
 
 model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid))

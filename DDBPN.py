@@ -6,12 +6,16 @@ from Models import *
 # BP layers, instead of the 10 stages version. The performance doesn't differ much from the latter.
 class DDBPN:
     def __init__(self, scale_factor=2, bias=True, bias_init='zeros'):
-        # default scaling factor of 2
-        kernel_size = 6
-        stride = 2
-        padding = 2
+        kernel_size = 0
+        stride = 0
+        padding = 0
 
-        if scale_factor == 4:
+        if scale_factor == 2:
+            # default scaling factor of 2
+            kernel_size = 6
+            stride = 2
+            padding = 2
+        elif scale_factor == 4:
             kernel_size = 8
             stride = 4
             padding = 2
