@@ -9,7 +9,23 @@ import numpy as np
 def l1_loss(y_true, y_pred):
     mae = mean_absolute_error(y_true, y_pred)
     loss = mae * len(y_true)
+    print("MAE loss :", mae)
     return loss
+
+
+# Need to rework
+def evaluate(model, x_test, y_test):
+    avg_loss = 0
+    for i, im in enumerate(x_test):
+        inputim = []
+        output = []
+        inputim.append(im)
+        output.append(y_test[i])
+        print(np.array(inputim).shape)
+        print(np.array(output).shape)
+        y_pred = model.predict(np.array(inputim))
+        avg_loss = avg_loss + l1_loss(np.array(output), y_pred)
+    return avg_loss
 
 
 # 2D PSNR for images
@@ -62,3 +78,20 @@ def makeDataset(path_list):
         data.append(images_to_array(directory))
     return data
 
+
+# Upscaling the LR image to its HR counterpart using bicubic interpolation
+def Bicubic_LR_to_HR(path_for_convert, path_to_save, sf=1):
+    directory = os.listdir(path_for_convert)
+    for item in directory:
+        filepath = os.path.join(path_for_convert, item)
+        name, _ = os.path.splitext(item)
+        if os.path.isfile(filepath):
+            im = Image.open(filepath)
+            w, h = im.size
+            cim = im.resize((w * sf, h * sf), Image.BICUBIC)
+            cim.save(path_to_save + name + "Scaledx" + str(sf) + ".PNG")
+
+
+# Save the predicted image tensor into png file
+def save_predictions(path_to_save, y_pred):
+    

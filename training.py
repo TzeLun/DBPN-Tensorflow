@@ -1,7 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras import Input, Model
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import mean_absolute_error
 from DBPNM import *
 from DDBPN import *
 from Data_Eval import *
@@ -33,15 +32,18 @@ print(x_valid.shape)
 print(y_train.shape)
 print(y_test.shape)
 print(y_valid.shape)
+print(len(x_test))
+print(x_test[0].shape)
+print(len(x_test[0]))
 # Training the model
 batch_size = 16
 width = input_dim[1]
 height = input_dim[2]
 channel = input_dim[3]
-input_shape = (height, width, channel)
+input_shape = [height, width, channel]
 lr = 0.0004  # learning rate
 alpha = 0.9  # momentum
-epochs = 10  # author used 1000000!!
+epochs = 2  # author used 1000000!!
 
 # Model:
 model_input = Input(shape=input_shape, name=choice)
@@ -64,8 +66,8 @@ model.compile(
 )
 
 model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid), verbose=1)
-test_result = model.evaluate(x_test, y_test)
-print("Test Loss:", test_result[0])
+result = model.evaluate(x_test, y_test)
+#print("Average L1 Loss (Test dataset):", evaluate(model, x_test, y_test))
 
 # save the trained model
 model.save(choice + "_@epoch_" + str(epochs) + ".h5")
