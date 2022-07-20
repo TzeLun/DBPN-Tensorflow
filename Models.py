@@ -5,11 +5,11 @@ class CONV:
     def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init, activation=True):
         self.padding = padding
         self.activation = activation
-        self.f = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.f = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                         activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
-        x = ZeroPadding2D(padding=self.padding)(x)
+        #x = ZeroPadding2D(padding=self.padding)(x)
         x = self.f(x)
         if self.activation:
             x = PReLU()(x)

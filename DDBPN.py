@@ -43,7 +43,7 @@ class DDBPN:
         self.up7 = DenseUpProjection(64, kernel_size, stride, padding, 6, bias, bias_init)
 
         # Reconstruction
-        self.reconstruction = CONV(1, 1, 1, 0, bias, bias_init, False)
+        self.reconstruction = CONV(3, 3, 1, 1, bias, bias_init, False)
 
     def __call__(self, x):
 
