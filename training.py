@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import Input, Model
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import mean_absolute_error
 from DBPNM import *
 from DDBPN import *
 from Data_Eval import *
@@ -27,7 +28,11 @@ dataset_path = ["C:/Users/Tze Lun/DIV2K/x_train/X4_40x40/",
 [x_train, x_test, x_valid, y_train, y_test, y_valid] = makeDataset(dataset_path)
 input_dim = x_train.shape
 print(x_train.shape)
+print(x_test.shape)
+print(x_valid.shape)
 print(y_train.shape)
+print(y_test.shape)
+print(y_valid.shape)
 # Training the model
 batch_size = 16
 width = input_dim[1]
@@ -58,7 +63,7 @@ model.compile(
     optimizer=Adam(learning_rate=lr, beta_1=alpha)
 )
 
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid))
+model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid), verbose=1)
 test_result = model.evaluate(x_test, y_test)
 print("Test Loss:", test_result[0])
 

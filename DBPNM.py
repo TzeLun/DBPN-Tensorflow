@@ -35,7 +35,7 @@ class DBPNM:
         self.down3 = DownProjection(32, kernel_size, stride, padding, bias, bias_init)
         self.up4 = UpProjection(32, kernel_size, stride, padding, bias, bias_init)
         # Reconstruction
-        self.reconstruction = CONV(1, 1, 1, 0, bias, bias_init, False)
+        self.reconstruction = CONV(3, 1, 1, 0, bias, bias_init, False)
 
     def __call__(self, x):
 
