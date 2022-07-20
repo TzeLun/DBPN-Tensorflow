@@ -9,8 +9,7 @@ class CONV:
                         activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
-        if self.padding != 0:
-            x = ZeroPadding2D(padding=self.padding)(x)
+        x = ZeroPadding2D(padding=self.padding)(x)
         x = self.f(x)
         if self.activation:
             x = PReLU()(x)
@@ -20,11 +19,11 @@ class CONV:
 class DownProjection:
     def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
-        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                               activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                         activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                  activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
@@ -41,11 +40,11 @@ class DownProjection:
 class UpProjection:
     def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
-        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                        activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                           activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
@@ -63,11 +62,11 @@ class UpProjection:
 class DownProjectionWithoutEF:
     def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
-        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                               activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                         activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                  activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
@@ -85,11 +84,11 @@ class DownProjectionWithoutEF:
 class UpProjectionWithoutEF:
     def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
-        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                        activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                           activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
@@ -106,13 +105,13 @@ class UpProjectionWithoutEF:
 class DenseDownProjection:
     def __init__(self, num_filters, kernel_size, strides, padding, n_stage, bias, bias_init):
         self.padding = padding
-        self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='valid',
+        self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='same',
                            activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                               activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L0_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                         activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eH0_to_eL0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                  activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
@@ -131,13 +130,13 @@ class DenseDownProjection:
 class DenseUpProjection:
     def __init__(self, num_filters, kernel_size, strides, padding, n_stage, bias, bias_init):
         self.padding = padding
-        self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='valid',
+        self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='same',
                            activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.L_to_H0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                        activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='valid',
+        self.H0_to_L0 = Conv2D(num_filters, kernel_size, strides=strides, padding='same',
                                activation=None, use_bias=bias, bias_initializer=bias_init)
-        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='valid',
+        self.eL0_to_eH0 = Conv2DTranspose(num_filters, kernel_size, strides=strides, padding='same',
                                           activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):

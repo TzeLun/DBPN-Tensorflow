@@ -5,12 +5,16 @@ from Models import *
 # By default, all layers uses PReLU activation function, according to the author's work.
 class DBPNM:
     def __init__(self, scale_factor=2, bias=True, bias_init='zeros'):
-        # default scaling factor of 2
-        kernel_size = 6
-        stride = 2
-        padding = 2
+        kernel_size = 0
+        stride = 0
+        padding = 0
 
-        if scale_factor == 4:
+        if scale_factor == 2:
+            # default scaling factor of 2
+            kernel_size = 6
+            stride = 2
+            padding = 2
+        elif scale_factor == 4:
             kernel_size = 8
             stride = 4
             padding = 2
@@ -21,7 +25,7 @@ class DBPNM:
 
         # Feature extraction stage
         self.f0 = CONV(128, 3, 1, 1, bias, bias_init, True)
-        self.f1 = CONV(32, 1, 1, 0, bias, bias_init, False)
+        self.f1 = CONV(32, 1, 1, 0, bias, bias_init, True)
         # Back Projection stage, DBPN-M has a total of 4 BP stages, last stage only has an up-projection
         self.up1 = UpProjection(32, kernel_size, stride, padding, bias, bias_init)
         self.down1 = DownProjection(32, kernel_size, stride, padding, bias, bias_init)
@@ -54,12 +58,16 @@ class DBPNM:
 # Just for comparison. In general, this model will not be used in Super Resolution application
 class DBPNM_WithoutEF:
     def __init__(self, scale_factor, bias=True, bias_init='zeros'):
-        # default scaling factor of 2
-        kernel_size = 6
-        stride = 2
-        padding = 2
+        kernel_size = 0
+        stride = 0
+        padding = 0
 
-        if scale_factor == 4:
+        if scale_factor == 2:
+            # default scaling factor of 2
+            kernel_size = 6
+            stride = 2
+            padding = 2
+        elif scale_factor == 4:
             kernel_size = 8
             stride = 4
             padding = 2
@@ -70,7 +78,7 @@ class DBPNM_WithoutEF:
 
         # Feature extraction stage
         self.f0 = CONV(128, 3, 1, 1, bias, bias_init, True)
-        self.f1 = CONV(32, 1, 1, 0, bias, bias_init, False)
+        self.f1 = CONV(32, 1, 1, 0, bias, bias_init, True)
         # Back Projection stage, DBPN-M has a total of 4 BP stages, last stage only has an up-projection
         self.up1 = UpProjectionWithoutEF(32, kernel_size, stride, padding, bias, bias_init)
         self.down1 = DownProjectionWithoutEF(32, kernel_size, stride, padding, bias, bias_init)
