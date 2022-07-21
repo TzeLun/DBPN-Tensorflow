@@ -9,7 +9,6 @@ class CONV:
                         activation=None, use_bias=bias, bias_initializer=bias_init)
 
     def __call__(self, x):
-        #x = ZeroPadding2D(padding=self.padding)(x)
         x = self.f(x)
         if self.activation:
             x = PReLU()(x)

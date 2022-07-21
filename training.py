@@ -13,7 +13,7 @@ print(gpu_available)
 print(is_cuda_gpu_available)
 
 # Parameters
-choice = "DBPN-M"  # DBPN-M (default), DBPN-M NEF, D-DBPN
+choice = "D-DBPN"  # DBPN-M (default), DBPN-M NEF, D-DBPN
 sf = 4  # default at 2, otherwise 4 or 8
 
 # Data generation:
@@ -26,15 +26,7 @@ dataset_path = ["C:/Users/Tze Lun/DIV2K/x_train/X4_40x40/",
 
 [x_train, x_test, x_valid, y_train, y_test, y_valid] = makeDataset(dataset_path)
 input_dim = x_train.shape
-print(x_train.shape)
-print(x_test.shape)
-print(x_valid.shape)
-print(y_train.shape)
-print(y_test.shape)
-print(y_valid.shape)
-print(len(x_test))
-print(x_test[0].shape)
-print(len(x_test[0]))
+
 # Training the model
 batch_size = 16
 width = input_dim[1]
@@ -43,7 +35,7 @@ channel = input_dim[3]
 input_shape = [height, width, channel]
 lr = 0.0004  # learning rate
 alpha = 0.9  # momentum
-epochs = 2  # author used 1000000!!
+epochs = 100  # author used 1000000!!
 
 # Model:
 model_input = Input(shape=input_shape, name=choice)
@@ -51,7 +43,7 @@ output = 0
 if choice == "DBPN-M":
     # DBPN-M with error feedback (default)
     output = DBPNM(scale_factor=sf)(model_input)
-elif choice == "DBPN-M NEF":
+elif choice == "DBPN-M_NEF":
     # DBPNM without error feedback
     output = DBPNM_WithoutEF(scale_factor=sf)(model_input)
 elif choice == "D-DBPN":
@@ -61,13 +53,13 @@ elif choice == "D-DBPN":
 model = Model(model_input, output)
 print(model.summary())
 model.compile(
-    loss=l1_loss,
+    loss='mean_absolute_error',
     optimizer=Adam(learning_rate=lr, beta_1=alpha)
 )
 
+# Train the model
 model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_valid, y_valid), verbose=1)
-result = model.evaluate(x_test, y_test)
-#print("Average L1 Loss (Test dataset):", evaluate(model, x_test, y_test))
-
 # save the trained model
 model.save(choice + "_@epoch_" + str(epochs) + ".h5")
+
+

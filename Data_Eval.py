@@ -61,7 +61,8 @@ def images_to_array(path_to_dataset):
     for item in directory:
         filepath = os.path.join(path_to_dataset, item)
         if os.path.isfile(filepath):
-            im = np.array(Image.open(filepath))
+            im = Image.open(filepath).convert('RGB')
+            im = np.array(im)
             im = im.astype('float32')
             img_array.append(im)
     return np.array(img_array)
@@ -92,6 +93,33 @@ def Bicubic_LR_to_HR(path_for_convert, path_to_save, sf=1):
             cim.save(path_to_save + name + "Scaledx" + str(sf) + ".PNG")
 
 
-# Save the predicted image tensor into png file
-def save_predictions(path_to_save, y_pred):
-    
+# Use the model to improve the resolution of the input LR image
+# Input type should have the shape (None, h, w, c): [img]
+# Can accept batches: [img1, img2, img3, ... ]
+def LR_to_HR_transform(model, data):
+    output = []
+    for img in data:
+        im = list()
+        im.append(img)
+        output.append(model.predict(np.array(im)))
+    return np.array(output)
+
+
+# Restore the image pixels of the normalized image data, returns numpy array of unit8 [0 255]
+def restoreIMAGE(data):
+    output = []
+    for im in data:
+        im = im[0]
+        im = im.astype(np.uint8)
+        output.append(im)
+    return np.array(output)
+
+
+# Save the image tensor into png file in batches
+def saveIMAGE(path_to_save, data):
+    for i, im in enumerate(data):
+        im = im[0]
+        im = im.astype(np.uint8)
+        img = Image.fromarray(im, 'RGB')
+        img.save(path_to_save + "PIL_IMG_" + str(i + 1) + ".PNG")
+
