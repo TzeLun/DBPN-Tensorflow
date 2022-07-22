@@ -102,7 +102,7 @@ class UpProjectionWithoutEF:
 
 
 class DenseDownProjection:
-    def __init__(self, num_filters, kernel_size, strides, padding, n_stage, bias, bias_init):
+    def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
         self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='same',
                            activation=None, use_bias=bias, bias_initializer=bias_init)
@@ -127,7 +127,7 @@ class DenseDownProjection:
 
 
 class DenseUpProjection:
-    def __init__(self, num_filters, kernel_size, strides, padding, n_stage, bias, bias_init):
+    def __init__(self, num_filters, kernel_size, strides, padding, bias, bias_init):
         self.padding = padding
         self.conv = Conv2D(num_filters, kernel_size=1, strides=1, padding='same',
                            activation=None, use_bias=bias, bias_initializer=bias_init)

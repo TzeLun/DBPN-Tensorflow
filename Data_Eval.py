@@ -1,43 +1,15 @@
-from tensorflow.keras.losses import mean_absolute_error
 from PIL import Image
 import os.path
-from tensorflow import image
 import numpy as np
 
 
-# The L1 loss function
-def l1_loss(y_true, y_pred):
-    mae = mean_absolute_error(y_true, y_pred)
-    loss = mae * len(y_true)
-    print("MAE loss :", mae)
-    return loss
-
-
-# Need to rework
-def evaluate(model, x_test, y_test):
-    avg_loss = 0
-    for i, im in enumerate(x_test):
-        inputim = []
-        output = []
-        inputim.append(im)
-        output.append(y_test[i])
-        print(np.array(inputim).shape)
-        print(np.array(output).shape)
-        y_pred = model.predict(np.array(inputim))
-        avg_loss = avg_loss + l1_loss(np.array(output), y_pred)
-    return avg_loss
-
-
-# 2D PSNR for images
+# Calculate Peak Signal-to-Noise Ratio for each batch of images with their HR counterparts
 def PSNR(y_pred, y_true, max_val):
-    # For array of images, (no. of image, w, h, d), calculate avg psnr
-    if len(y_pred.shape) == 4:
-        psnr = 0
-        for ind in range(len(y_pred)):
-            psnr = psnr + image.psnr(y_pred[ind], y_true[ind], max_val=max_val)
-        return psnr
-    elif len(y_pred.shape) == 3:
-        return image.psnr(y_pred, y_true, max_val=max_val)
+    psnr = 0
+    for ind in range(len(y_pred)):
+        mse = np.square(np.subtract(y_pred[ind], y_true[ind])).mean()
+        psnr = psnr + 10 * np.log10(max_val * max_val / mse)
+    return psnr / len(y_pred)
 
 
 # re-crop all the images given a size in the folder
@@ -101,24 +73,13 @@ def LR_to_HR_transform(model, data):
     for img in data:
         im = list()
         im.append(img)
-        output.append(model.predict(np.array(im)))
-    return np.array(output)
-
-
-# Restore the image pixels of the normalized image data, returns numpy array of unit8 [0 255]
-def restoreIMAGE(data):
-    output = []
-    for im in data:
-        im = im[0]
-        im = im.astype(np.uint8)
-        output.append(im)
+        output.append(model.predict(np.array(im))[0])
     return np.array(output)
 
 
 # Save the image tensor into png file in batches
 def saveIMAGE(path_to_save, data):
     for i, im in enumerate(data):
-        im = im[0]
         im = im.astype(np.uint8)
         img = Image.fromarray(im, 'RGB')
         img.save(path_to_save + "PIL_IMG_" + str(i + 1) + ".PNG")
