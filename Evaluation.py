@@ -12,7 +12,7 @@ DBPNM = load_model("C:/Users/Tze Lun/VisualMediaAssignment/DBPN-M_@epoch_100.h5"
 DBPNM_NEF = load_model("C:/Users/Tze Lun/VisualMediaAssignment/DBPN-M_NEF_@epoch_100.h5")
 DDBPN = load_model("C:/Users/Tze Lun/VisualMediaAssignment/D-DBPN_@epoch_100.h5")
 
-# Post-processing of test data: SISR conversion and image pixels restoration
+# Post-processing of test data: SISR conversion of LR test images
 y_pred_DBPNM = LR_to_HR_transform(DBPNM, x_test)
 y_pred_DBPNM_NEF = LR_to_HR_transform(DBPNM_NEF, x_test)
 y_pred_DDBPN = LR_to_HR_transform(DDBPN, x_test)
