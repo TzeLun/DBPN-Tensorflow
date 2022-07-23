@@ -50,6 +50,8 @@ np.array().shape: (Num_images, Height, Width, Channels)
 ```
 In case if it wasn't detailed before, the y-dataset comprises of HR images, whereas the x-dataset comprises of LR images. Both HR and LR images have a 1:1 aspect ratio but their sizes differ by the scalar multiple (scaling factor, sf) you choose. So make sure to prepare the dataset accordingly. <br />
 
+Also, each of the three models have their pre-trained model for 100 epoch and they are accessible through [here](https://github.com/TzeLun/VisualMediaAssignment/tree/main/Trained%20Models). As the training was done with limited data and without data augmentation, it is advisable to use them only as a quick demo. <br />
+
 ### SISR transformation
 Once the model is trained, it should automatically be saved in a ".h5" file. To perform LR-to-HR transformation using the trained model, run the ```testing.py``` file.
 Below shows the contents of the aforementioned python file: <br />
