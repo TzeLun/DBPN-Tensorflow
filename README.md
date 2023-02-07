@@ -1,8 +1,6 @@
-# VisualMediaAssignment
+# Deep Back-ProjectiNetwork for Single Image Super-Resolution in Tensorflow Keras
 This is the assignment for the 4840-1014 Visual Media module, a graduate level module in the University of Tokyo <br />
-
-## Deep Back-ProjectiNetwork for Single Image Super-Resolution [1]
-This is the chosen journal to study and work on for my assignment. The chosen journal is under IEEE TPAMI. <br />
+It is also a reimplementation of DBPN with Tensorflow 2.0 (Keras) <br />
 Credit goes to the authors of this paper, available under the reference section. <br />
 
 ## Details of research
